@@ -7,6 +7,7 @@ const Doctor = () => {
   const [filterDoc, setFilterDoc] = useState([]);
   const navigate = useNavigate();
   const { doctors } = useContext(AppContext);
+  const [showFilter,setShowFilter]=useState(false)
 
   // Apply Filter
   const applyFilter = () => {
@@ -31,8 +32,9 @@ const Doctor = () => {
 
       <div className="flex flex-col sm:flex-row items-start gap-6 mt-5">
 
+        <button className={`py-1 px-3 border rounded text-sm transition-all sm:hidden ${showFilter ? 'bg-[#5f6FFF] text-white' : ''}`} onClick={()=>setShowFilter(prev=>!prev)}>Filters</button>
         {/* LEFT SIDE - SPECIALITY LIST */}
-        <div className="flex flex-col gap-4 text-sm text-gray-600 sm:w-1/4">
+        <div className={` flex-col gap-4 text-sm text-gray-600 sm:w-1/4 ${showFilter ? 'flex' : 'hidden sm:flex' }`}>
 
           <p
             onClick={() =>

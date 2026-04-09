@@ -30,7 +30,7 @@ const Navbar = () => {
                     <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
                 </NavLink>
             </ul>
-        <div className="">
+        <div className="flex items-center gap-4">
             {
             token
             ?   <div className='flex items-center gap-2 cursor-pointer group relative'> 
@@ -48,6 +48,61 @@ const Navbar = () => {
             : <button onClick={()=>navigate('/login')} className="bg-blue-500 text-white px-6 py-2 rounded-full font-medium">Create Account</button>
 
             }
+            <img onClick={()=>setShowMenu(true)} className='w-6 md:hidden' src={assets.menu_icon} alt="" />
+            {/* -----------------MobileMenu------------------ */}
+            <div className={`fixed md:hidden top-0 right-0 h-full w-64 bg-white z-20 transform transition-transform duration-300 ${
+                    showMenu ? 'translate-x-0' : 'translate-x-full'
+                }`}>
+                <div className='flex items-center justify-between px-5 py-6'>
+                    <img className='w-36' src={assets.logo} alt="" />
+                    <img className='w-7' onClick={()=>setShowMenu(false)} src={assets.cross_icon} alt="" />
+                </div>
+
+                <ul className='flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium'>
+
+  <NavLink 
+    onClick={()=>setShowMenu(false)} 
+    to='/' 
+    className={({isActive}) => 
+      isActive ? "px-4 py-2 rounded inline-block bg-blue-500 text-white" : "px-4 py-2 rounded inline-block"
+    }
+  >
+    Home
+  </NavLink>
+
+  <NavLink 
+    onClick={()=>setShowMenu(false)} 
+    to='/doctor'
+    className={({isActive}) => 
+      isActive ? "px-4 py-2 rounded inline-block bg-blue-500 text-white" : "px-4 py-2 rounded inline-block"
+    }
+  >
+    ALL Doctors
+  </NavLink>
+
+  <NavLink 
+    onClick={()=>setShowMenu(false)} 
+    to='/about'
+    className={({isActive}) => 
+      isActive ? "px-4 py-2 rounded inline-block bg-blue-500 text-white" : "px-4 py-2 rounded inline-block"
+    }
+  >
+    About
+  </NavLink>
+
+  <NavLink 
+    onClick={()=>setShowMenu(false)} 
+    to='/contact'
+    className={({isActive}) => 
+      isActive ? "px-4 py-2 rounded inline-block bg-blue-500 text-white" : "px-4 py-2 rounded inline-block"
+    }
+  >
+    Contact
+  </NavLink>
+
+</ul>
+
+            </div>
         </div>
       
     </div>
