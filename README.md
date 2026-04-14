@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 # PRESCRIPTO
+=======
+# PRESCRIPTO
+>>>>>>> 088b59459de0a2f47c337f58edc8b3456c9e82c8
