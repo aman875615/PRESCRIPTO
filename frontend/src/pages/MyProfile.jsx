@@ -1,24 +1,15 @@
-import React,{useState} from 'react'
-import {assets} from '../assets/assets'
+import React,{useContext, useState} from 'react'
+
+import { AppContext } from '../context/AppContext'
 
 const MyProfile = () => {
-  const [userData,setUserData] = useState({
-    name:"Edward Vincent",
-    image:assets.profile_pic,
-    email: 'vinaced@gmail.com',
-    phone: '+ 123 456 7890',
-    address:{
-      line1:'57th Cross ,richmond',
-      line2:'Circle,Church Road, London'
-    },
-    gender:'male',
-    dob:'2000-02-20'
-  })
+    const {userData,setUserData } = useContext(AppContext)
 
   const [isEdit,setIsEdit]= useState(true)
+  console.log(userData)
 
 
-  return (
+  return userData && (
     <div className='max-w-lg flex flex-col gap-2 test-sm'>
       <img className='w-36 rounded' src={userData.image} alt="" />
       {
@@ -39,9 +30,9 @@ const MyProfile = () => {
           <p className='font-medium'>Address:</p>
           {
             isEdit ? <p>
-              <input className='bg-gray-50' vlaue={userData.address.line1} onChange={(e)=>setUserData({...prev,address:{...prev,address,line1:e.target.value}})} type="text" />
+              <input className='bg-gray-50' value={userData.address?.line1 || ""} onChange={(e)=>setUserData({...prev,address:{...prev,address,line1:e.target.value}})} type="text" />
               <br />
-              <input className='bg-gray-50' vlaue={userData.address.line2} onChange={(e)=>setUserData({...prev,address:{...prev,address,line2:e.target.value}})} type="text" />
+              <input className='bg-gray-50' value={userData.address?.line1 || ""} onChange={(e)=>setUserData({...prev,address:{...prev,address,line2:e.target.value}})} type="text" />
             </p>
             : <p className='text-gray-500'>
               {userData.address.line1}
