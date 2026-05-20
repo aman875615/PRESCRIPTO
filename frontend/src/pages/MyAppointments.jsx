@@ -4,6 +4,7 @@ import { AppContext } from '../context/AppContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
+
 const MyAppointments = () => {
 
   const { backendUrl, token } = useContext(AppContext)
@@ -13,7 +14,7 @@ const MyAppointments = () => {
   const months = [
     "",
     "Jan",
-    "Fgtieb",
+    "Feb",
     "Mar",
     "Apr",
     "May",
@@ -84,6 +85,88 @@ const MyAppointments = () => {
 
       }
 
+    } catch (error) {
+
+      console.log(error)
+      toast.error(error.message)
+
+    }
+  }
+
+
+  const initPay = (order) => {
+
+  const options = {
+
+    key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+
+    amount: order.amount,
+
+    currency: order.currency,
+
+    name: 'Appointment Payment',
+
+    description: 'Payment for appointment',
+
+    order_id: order.id,
+
+    receipt: order.receipt,
+
+    handler: async function (response) {
+
+      console.log(response)
+
+      toast.success('Payment Successful')
+
+      getUserAppointments()
+
+    },
+
+    prefill: {
+
+      name: 'John Doe',
+
+      email: 'john.doe@example.com'
+
+    },
+
+    theme: {
+
+      color: '#5f6FFF'
+
+    }
+
+  }
+
+  const rzp = new window.Razorpay(options)
+
+  rzp.on('payment.failed', function (response) {
+
+    toast.error('Payment Failed')
+
+    console.log(response.error)
+
+  })
+
+  rzp.open()
+
+}    
+  const appointmentRazorpay = async (appointmentId) => {
+
+    try {
+      const { data } = await axios.post(
+        backendUrl + '/api/user/payment-razorpay',
+        { appointmentId },
+        {
+          headers: { token }
+        }
+      )
+      if (data.success) {
+
+        initPay(data.order)
+
+
+      }
     } catch (error) {
 
       console.log(error)
@@ -173,7 +256,9 @@ const MyAppointments = () => {
 
                 {!item.cancelled && (
 
-                  <button className='text-sm text-stone-500 sm:min-w-48 py-2 border rounded hover:bg-[#5f6FFF] hover:text-white transition-all duration-300'>
+                  <button 
+                  onClick={()=>appointmentRazorpay(item._id)}
+                  className='text-sm text-stone-500 sm:min-w-48 py-2 border rounded hover:bg-[#5f6FFF] hover:text-white transition-all duration-300'>
                     Pay Online
                   </button>
 
