@@ -3,12 +3,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 
 const MyAppointments = () => {
 
   const { backendUrl, token } = useContext(AppContext)
-
+  const navigate = useNavigate()
   const [appointments, setAppointments] = useState([])
 
   const months = [
@@ -116,9 +117,21 @@ const MyAppointments = () => {
 
       console.log(response)
 
-      toast.success('Payment Successful')
+      try {
 
-      getUserAppointments()
+        const { data } = await axios.post(backendUrl + '/api/user/verifyRazorpay', response,{headers:{token}})
+        if (data.success) {
+          toast.success(data.message)
+          getUserAppointments()
+          navigate('/my-appointments')
+        } else {
+          toast.error(data.message)
+        }
+        
+      } catch (error) {
+        console.log(error)
+        toast.error(error.message)
+      }
 
     },
 
@@ -254,7 +267,11 @@ const MyAppointments = () => {
 
               <div className='flex flex-col gap-2 justify-end'>
 
-                {!item.cancelled && (
+                {!item.cancelled && item.payment && <button  className='text-sm text-green-500 sm:min-w-48 py-2 border rounded'>
+                  Paid
+                </button>}
+
+                {!item.cancelled && !item.payment && (
 
                   <button 
                   onClick={()=>appointmentRazorpay(item._id)}
