@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 
 
 
+
 export const AdminContext = createContext()
 
 const AdminContextProvider = (props)=>{
@@ -12,6 +13,7 @@ const AdminContextProvider = (props)=>{
     const [aToken,setAToken] = useState(localStorage.getItem('aToken') ? localStorage.getItem('aToken') : '')
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [doctors,setDoctors] = useState([])
+    const [appointments,setAppointments] = useState([]) 
 
     const getAllDoctors = async () => {
         try {
@@ -54,6 +56,45 @@ const changeAvailability = async (docId) => {
 
 };
 
+    const getAllAppointments = async () => {
+        try {
+            
+        const { data } = await axios.get(backendUrl + '/api/admin/appointments',{ headers : { aToken }})    
+            if(data.success){
+                setAppointments(data.appointments)
+                console.log(data.getAllAppointments)
+                
+            }else{
+                toast.error(data.message)
+            }   
+
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+            }
+
+    }
+
+    const cancelAppointment = async (appointmentId) => {
+        try {
+            const { data } = await axios.post(
+                backendUrl + '/api/admin/cancel-applications',
+                { appointmentId },
+                { headers: { aToken } }
+            );
+            if (data.success) {
+                toast.success(data.message);
+                await getAllAppointments();
+            }
+                else {
+                toast.error(data.message);
+            }
+            } catch (error) {
+                console.log(error);
+                toast.error(error.message);
+            }
+    }
+
     const value = {
         aToken,
         setAToken,
@@ -61,7 +102,10 @@ const changeAvailability = async (docId) => {
         getAllDoctors,
         backendUrl,
         changeAvailability,
-        setDoctors
+        setDoctors,
+        getAllAppointments,
+        appointments,setAppointments,
+        cancelAppointment
     }
     return (
         <AdminContext.Provider value={value}>
