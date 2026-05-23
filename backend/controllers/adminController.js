@@ -170,5 +170,29 @@ const AppointmentCancel = async (req, res) => {
     }
 
 }
+//api to get dashboard data for admin
+ const adminDashboard = async (req, res) => {
+    try {
+        const doctors = await doctorModel.find({})
+        const users = await appointmentModel.find({})
+        const appointments = await appointmentModel.find({})
+        const dashdata = {
+                totalDoctors: doctors.length,
+                totalUsers: users.length,
+                totalAppointments: appointments.length,
+                latestAppointments: appointments.reverse().slice(0,5)
+        }
+        res.json({
+            success: true,
+            dashdata
+        })
+    } catch (error) {
+        console.log(error)
+        res.json({
+            success: false,
+            message: error.message
+        })
+    }
+}
 
-export { addDoctor, loginAdmin ,allDoctors,appointmentsAdmin,AppointmentCancel}
+export { addDoctor, loginAdmin ,allDoctors,appointmentsAdmin,AppointmentCancel,adminDashboard}
