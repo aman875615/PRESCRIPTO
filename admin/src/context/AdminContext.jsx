@@ -15,7 +15,7 @@ const AdminContextProvider = (props)=>{
     const [doctors,setDoctors] = useState([])
     const [appointments,setAppointments] = useState([]) 
     const [dashData,setDashData] = useState(false)
-
+    
     const getAllDoctors = async () => {
         try {
             const { data } = await axios.post(backendUrl + '/api/admin/all-doctors',{},{ headers : { aToken }})

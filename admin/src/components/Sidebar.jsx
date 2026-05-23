@@ -2,10 +2,12 @@ import React,{useContext} from 'react'
 import { AdminContext } from '../context/AdminContext'
 import { assets } from '../assets/assets'
 import { NavLink } from 'react-router-dom'
+import { DoctorContext } from '../context/DoctorContext'
 
 const Sidebar = () => {
 
   const { aToken } = useContext(AdminContext)
+  const { dToken } = useContext(DoctorContext)
 
   const linkClass = ({ isActive }) =>
     `flex items-center gap-3 py-3 px-5 cursor-pointer ${
@@ -41,8 +43,31 @@ const Sidebar = () => {
         </ul>
       )}
 
+
+       {dToken && (
+        <ul className='mt-5 text-gray-700'>
+
+          <NavLink className={linkClass} to="/doctor-dashboard">
+            <img className='w-5' src={assets.home_icon} alt="" />
+            <p>Dashboard</p>
+          </NavLink>
+
+          <NavLink className={linkClass} to="/doctor-appointments">
+            <img className='w-5' src={assets.appointment_icon} alt="" />
+            <p>Appointment</p>
+          </NavLink>
+
+          
+          <NavLink className={linkClass} to="/doctor-profile">
+            <img className='w-5' src={assets.people_icon} alt="" />
+            <p>Profile</p>
+          </NavLink>
+
+        </ul>
+      )}
+
     </div>
   )
 }
 
-export default Sidebar
+export default Sidebar 
