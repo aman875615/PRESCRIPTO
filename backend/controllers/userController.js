@@ -147,8 +147,14 @@ const bookAppointment = async(req,res)=>{
         const { docId, slotDate, slotTime } = req.body
 
         const userId = req.userId
+        
+        console.log('Booking appointment - docId:', docId, 'userId:', userId)
 
         const docData = await doctorModel.findById(docId).select('-password')
+        
+        if(!docData){
+            return res.json({success:false,message:'Doctor not found'})
+        }
 
         if(!docData.available){
             return res.json({success:false,message:'Doctor not available'})
@@ -174,8 +180,8 @@ const bookAppointment = async(req,res)=>{
         delete docData.slots_booked
 
         const appointmentData = {
-            userId,
-            docId,
+            userId: userId.toString(),
+            docId: docId.toString(),
             userData,
             docData,
             amount:docData.fees,
@@ -185,11 +191,16 @@ const bookAppointment = async(req,res)=>{
         }
 
         const newAppointment = new appointmentModel(appointmentData)
-        await newAppointment.save() //save the dataBase
+        const savedAppointment = await newAppointment.save() //save the dataBase
+        
+        console.log('Appointment saved - docId type:', typeof savedAppointment.docId, 'docId value:', savedAppointment.docId)
+        console.log('Full appointment:', JSON.stringify({docId: savedAppointment.docId, userId: savedAppointment.userId}))
 
         //save new slots data in docData
 
         await doctorModel.findByIdAndUpdate(docId,{slots_booked})
+        
+        console.log('Appointment Booked successfully')
         res.json({success:true,message:'Appointment Booked'})
 
     } catch (error) {

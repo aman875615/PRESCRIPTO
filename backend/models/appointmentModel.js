@@ -57,6 +57,11 @@ const appointmentSchema = new mongoose.Schema({
   }
 });
 
+// Create indexes for faster queries
+appointmentSchema.index({docId: 1});
+appointmentSchema.index({userId: 1});
+appointmentSchema.index({date: -1});
+
 // Prevent model overwrite (important in MERN)
 const appointmentModel =
   mongoose.models.appointment ||

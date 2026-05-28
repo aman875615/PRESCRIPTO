@@ -22,22 +22,22 @@ const Sidebar = () => {
 
           <NavLink className={linkClass} to="/admin-dashboard">
             <img className='w-5' src={assets.home_icon} alt="" />
-            <p>Dashboard</p>
+            <p className="hidden md:block">Dashboard</p>
           </NavLink>
 
           <NavLink className={linkClass} to="/all-appointments">
             <img className='w-5' src={assets.appointment_icon} alt="" />
-            <p>Appointment</p>
+            <p className="hidden md:block">Appointment</p>
           </NavLink>
 
           <NavLink className={linkClass} to="/add-doctor">
             <img className='w-5' src={assets.add_icon} alt="" />
-            <p>Add Doctor</p>
+            <p className="hidden md:block">Add Doctor</p>
           </NavLink>
 
           <NavLink className={linkClass} to="/doctor-list">
             <img className='w-5' src={assets.people_icon} alt="" />
-            <p>Doctors List</p>
+            <p className="hidden md:block"  >Doctors List</p>
           </NavLink>
 
         </ul>
@@ -49,18 +49,18 @@ const Sidebar = () => {
 
           <NavLink className={linkClass} to="/doctor-dashboard">
             <img className='w-5' src={assets.home_icon} alt="" />
-            <p>Dashboard</p>
+            <p className="hidden md:block">Dashboard</p>
           </NavLink>
 
           <NavLink className={linkClass} to="/doctor-appointments">
             <img className='w-5' src={assets.appointment_icon} alt="" />
-            <p>Appointment</p>
+            <p className="hidden md:block">Appointment</p>
           </NavLink>
 
           
           <NavLink className={linkClass} to="/doctor-profile">
             <img className='w-5' src={assets.people_icon} alt="" />
-            <p>Profile</p>
+            <p className="hidden md:block">Profile</p>
           </NavLink>
 
         </ul>

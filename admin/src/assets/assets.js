@@ -44,9 +44,12 @@ import people_icon from './people_icon.jpeg'
 import upload_img from './upload_img.png'
 import patient_icon from './patient_icon.png'
 import latestAppointment_icon from './latestAppointment_icon.png'
+import tick_icon from './tick_icon.webp'
+import earnings_icon from './earnings_icon.png'
 
 export const assets = {
-    upload_img,
+    upload_img,tick_icon,
+    earnings_icon,
     people_icon,
     home_icon,
     add_icon,
