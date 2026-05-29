@@ -33,14 +33,14 @@ const App = () => {
         <Sidebar />
 
         <Routes>
-          //admin routes
+          {/* admin routes */}
           <Route path='/' element={<></>} />
           <Route path='/admin-dashboard' element={<Dashboard />} />
           <Route path='/all-appointments' element={<AllAppointment />} />
           <Route path='/add-doctor' element={<AddDoctor />} />
           <Route path='/doctor-list' element={<DoctorsList />} />
           
-          //doctor routes
+          {/* doctor routes */}
           
           <Route path='/doctor-dashboard' element={<DoctorDashboard />} />
           <Route path='/doctor-appointments' element={<DoctorAppointments />} />  
