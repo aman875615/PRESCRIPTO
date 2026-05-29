@@ -9,7 +9,7 @@ const DoctorContextProvider = (props)=>{
     const [dToken,setDToken]= useState(localStorage.getItem('dToken') ? localStorage.getItem('dToken') : '')
     const [appointments, setAppointments] = useState([])
    const [dashData, setDashData] = useState(false)
-
+    const [profileData, setProfileData] = useState(false)
      
     const getAppointments = async () => {
         if(!dToken){
@@ -113,6 +113,25 @@ const getDashData = async () => {
         }
 
 }
+const getProfileData = async () => {
+    try {
+        const {data} = await axios.get(backendUrl+'/api/doctor/profile',{ 
+            headers: {Authorization:`Bearer ${dToken}`}
+        })
+        if(data.success){
+            setProfileData(data.profileData)
+            console.log('Fetched profile data:', data.profileData)
+        }
+        else{
+            toast.error(data.message)
+            console.error('Profile data fetch failed:', data.message)
+        }
+    }
+    catch (error) {
+        console.error('Error fetching profile data:', error)
+        toast.error(error.message || 'Failed to fetch profile data')    
+     }
+}
 
     const value = {
         backendUrl,
@@ -123,7 +142,8 @@ const getDashData = async () => {
         getAppointments,
         completeAppointment,
         cancelAppointment,
-        dashData,getDashData,setDashData
+        dashData,getDashData,setDashData,
+        profileData,getProfileData,setProfileData
     }
     
     return (

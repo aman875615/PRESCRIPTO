@@ -49,7 +49,7 @@ const Dashboard = () => {
 
     <div className='bg-white rounded-2xl shadow-sm border border-gray-200 min-h-[40vh] max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300'>
   {dashData.latestAppointments &&
-  dashData.latestAppointments.length > 0 ? (
+   dashData.latestAppointments.length > 0 ? (
 
     dashData.latestAppointments.map((item, index) => (
 
