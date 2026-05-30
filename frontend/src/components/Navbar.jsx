@@ -67,7 +67,7 @@ const Navbar = () => {
 
                 {/* Admin Panel Button */}
                 <button
-                    onClick={() => window.open('http://localhost:5174', '_blank')}
+                    onClick={() => window.open('https://prescripto-admin-x8ex.onrender.com', '_blank')}
                     className='border border-gray-300 px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-100 transition'
                 >
                     Admin Panel
