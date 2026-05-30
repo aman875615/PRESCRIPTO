@@ -196,7 +196,7 @@ const Navbar = () => {
                         <button
                             onClick={() => {
                                 setShowMenu(false)
-                                window.open('http://localhost:5174', '_blank')
+                                window.open('https://prescripto-admin-x8ex.onrender.com', '_blank')
                             }}
                             className='px-4 py-2 rounded'
                         >
