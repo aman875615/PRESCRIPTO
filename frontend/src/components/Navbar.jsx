@@ -70,7 +70,7 @@ const Navbar = () => {
                     onClick={() => window.open('https://prescripto-admin-x8ex.onrender.com', '_blank')}
                     className='border border-gray-300 px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-100 transition'
                 >
-                    Admin Panel
+                    Admin/Doctor Panel
                 </button>
 
             </ul>
@@ -200,7 +200,7 @@ const Navbar = () => {
                             }}
                             className='px-4 py-2 rounded'
                         >
-                            Admin Panel
+                            Admin/Doctor Panel
                         </button>
 
                     </ul>
