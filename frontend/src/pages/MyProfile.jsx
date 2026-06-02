@@ -57,7 +57,7 @@ const MyProfile = () => {
                     src={
                       image
                         ? URL.createObjectURL(image)
-                        : userData.image || assets.profile_pic
+                        : userData.image ? (userData.image.startsWith('http') || userData.image.startsWith('data:') ? userData.image : `data:image/png;base64,${userData.image}`) : assets.profile_pic
                     }
                     alt=""
                   />
@@ -77,7 +77,7 @@ const MyProfile = () => {
             ) : (
               <img
                 className="w-36 h-36 object-cover rounded-full border"
-                src={userData.image || assets.profile_pic}
+                src={userData.image ? (userData.image.startsWith('http') || userData.image.startsWith('data:') ? userData.image : `data:image/png;base64,${userData.image}`) : assets.profile_pic}
                 alt=""
               />
             )}

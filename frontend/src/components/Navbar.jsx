@@ -85,7 +85,7 @@ const Navbar = () => {
 
                                 <img
   className="w-12 h-12 rounded-full object-cover object-center border-2 border-gray-200"
-  src={userData.image || assets.profile_pic}
+  src={userData.image ? (userData.image.startsWith('http') || userData.image.startsWith('data:') ? userData.image : `data:image/png;base64,${userData.image}`) : assets.profile_pic}
   alt="Profile"
 />
 
