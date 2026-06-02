@@ -129,11 +129,13 @@ const Doctor = () => {
               className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:-translate-y-2 transition-all duration-500"
             >
               {/* Doctor Image */}
-              <img
-                src={item.image}
-                alt={item.name}
-                className="bg-blue-50 w-full"
-              />
+              <div className="bg-blue-50 w-full h-72 overflow-hidden">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
 
               <div className="p-4">
 

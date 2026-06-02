@@ -84,10 +84,10 @@ const Navbar = () => {
                             <div className='flex items-center gap-2 cursor-pointer group relative'>
 
                                 <img
-                                    className='w-8 rounded-full'
-                                    src={userData.image}
-                                    alt=""
-                                />
+  className="w-12 h-12 rounded-full object-cover object-center border-2 border-gray-200"
+  src={userData.image || assets.profile_pic}
+  alt="Profile"
+/>
 
                                 <img
                                     className='w-2.5'
