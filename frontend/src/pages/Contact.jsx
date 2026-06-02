@@ -3,7 +3,7 @@ import { assets } from '../assets/assets'
 
 const Contact = () => {
   return (
-    <div>
+    <div className='px-4 sm:px-0'>
 
       <div className='text-center text-2xl pt-10 text-gray-500'>
         <p>
@@ -11,7 +11,7 @@ const Contact = () => {
         </p>
       </div>
 
-      <div className='my-10 flex flex-col justify-center md:flex-row gap-10 mb-28 text-sm'>
+      <div className='my-10 flex flex-col justify-center md:flex-row gap-6 md:gap-10 mb-28 text-sm'>
 
         <img
           className='w-full md:max-w-[360px] rounded-lg'

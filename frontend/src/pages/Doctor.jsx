@@ -23,7 +23,7 @@ const Doctor = () => {
   }, [doctors, speciality]);
 
   return (
-    <div className="px-6">
+    <div className="px-4 sm:px-6">
 
       {/* Heading */}
       <p className="text-gray-600 mb-4">

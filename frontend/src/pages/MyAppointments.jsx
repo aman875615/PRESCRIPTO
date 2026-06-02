@@ -198,7 +198,7 @@ const MyAppointments = () => {
 
   return (
 
-    <div>
+    <div className='px-4 sm:px-0'>
 
       <p className='pb-3 mt-12 font-medium text-zinc-700 border-b'>
         My Appointments

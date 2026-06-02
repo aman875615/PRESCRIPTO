@@ -3,13 +3,13 @@ import { assets } from '../assets/assets'
 
 const About = () => {
   return (
-    <div>
+    <div className='px-4 sm:px-0'>
       
       <div className='text-center text-2xl pt-10 text-gray-500'>
         <p>ABOUT <span className='text-gray-700 font-medium'>US</span></p>
       </div>
 
-      <div className='my-10 flex flex-col md:flex-row gap-12'>
+      <div className='my-10 flex flex-col md:flex-row gap-6 md:gap-12'>
 
         <img className='w-full md:max-w-[360px] transition-transform duration-300 hover:scale-105 cursor-pointer' src={assets.about_image} alt="" />
 
@@ -36,19 +36,19 @@ const About = () => {
   <p>WHY <span className='text-gray-700 font-semibold'>CHOOSE US</span></p>
 </div>
 
-<div className='flex flex-col md:flex-row mb-20 gap-6'>
+<div className='flex flex-col md:flex-row mb-20 gap-4 md:gap-6'>
 
-  <div className='border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] shadow-lg hover:shadow-2xl hover:bg-[#5f6FFF] hover:text-white cursor-pointer transition-all duration-300 text-gray-600 rounded-lg'>
+  <div className='border px-6 md:px-16 py-6 sm:py-16 flex flex-col gap-5 text-[15px] shadow-lg hover:shadow-2xl hover:bg-[#5f6FFF] hover:text-white cursor-pointer transition-all duration-300 text-gray-600 rounded-lg'>
     <b>Efficiency:</b>
     <p>Streamlined appointment scheduling that fits into your busy lifestyle.</p>
   </div>
 
-  <div className='border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] shadow-lg hover:shadow-2xl hover:bg-[#5f6FFF] hover:text-white cursor-pointer transition-all duration-300 text-gray-600 rounded-lg'>
+  <div className='border px-6 md:px-16 py-6 sm:py-16 flex flex-col gap-5 text-[15px] shadow-lg hover:shadow-2xl hover:bg-[#5f6FFF] hover:text-white cursor-pointer transition-all duration-300 text-gray-600 rounded-lg'>
     <b>Convenience:</b>
     <p>Access to a network of trusted healthcare professionals in your area.</p>
   </div>
 
-  <div className='border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] shadow-lg hover:shadow-2xl hover:bg-[#5f6FFF] hover:text-white cursor-pointer transition-all duration-300 text-gray-600 rounded-lg'>
+  <div className='border px-6 md:px-16 py-6 sm:py-16 flex flex-col gap-5 text-[15px] shadow-lg hover:shadow-2xl hover:bg-[#5f6FFF] hover:text-white cursor-pointer transition-all duration-300 text-gray-600 rounded-lg'>
     <b>Personalization:</b>
     <p>Tailored recommendations and reminders to help you stay on top of your health.</p>
   </div>
