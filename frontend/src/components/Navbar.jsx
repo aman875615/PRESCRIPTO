@@ -202,6 +202,7 @@ const Navbar = () => {
                         >
                             Admin/Doctor Panel
                         </button>
+                        //https://prescripto-admin-x8ex.onrender.com
 
                     </ul>
 

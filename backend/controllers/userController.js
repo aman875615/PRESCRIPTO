@@ -8,6 +8,8 @@ import doctorModel from '../models/doctorModel.js'
 import appointmentModel from '../models/appointmentModel.js'
 import razorpay from 'razorpay'
 
+import nodemailer from 'nodemailer'
+
 // Register API
 const registerUser = async (req, res) => {
     try {
@@ -360,5 +362,44 @@ const verifyRazorpayPayment = async(req,res)=>{
 
     }
 
+    const sendMail = async(req,res)=>{
+        try {
+            const { email, subject,name } = req.body
 
-export { registerUser, loginUser, getProfile, updateProfile ,bookAppointment,listAppointment,cancelAppointment,paymentRazorpay,verifyRazorpayPayment}    
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.EMAIL_PASSWORD
+
+                }
+            })
+
+            const mailOptions = {
+                from: process.env.EMAIL,
+                to: email,
+                subject: "New message from Prescripto",
+                text: `Welcome to Prescripto, ${name}!You have successfully registered on our platform. We are excited to have you on board and look forward to providing you with the best healthcare services. If you have any questions or need assistance, feel free to reach out to our support team. Thank you for choosing Prescripto!`
+            }
+
+            let mailSend = await transporter.sendMail(mailOptions)
+
+            if(mailSend){
+                res.json({success:true,message:'Email sent successfully'})
+            }else{
+                res.json({success:false,message:'Failed to send email'})
+            }
+        } catch (error) {
+            console.log(error)
+            res.json({
+                success: false,
+                message: error.message
+            })
+        }
+    }
+                
+
+        
+
+
+export { registerUser, loginUser, getProfile, updateProfile ,bookAppointment,listAppointment,cancelAppointment,paymentRazorpay,verifyRazorpayPayment,sendMail}    
