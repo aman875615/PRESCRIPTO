@@ -364,7 +364,7 @@ const verifyRazorpayPayment = async(req,res)=>{
 
     const sendMail = async(req,res)=>{
         try {
-            const { email, subject,name } = req.body
+            const { email,name } = req.body
 
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
