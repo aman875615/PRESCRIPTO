@@ -41,7 +41,15 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      default:'0000000000',
+      default:'+91 ---------',
+    },
+    resetOtp: {
+      type: String,
+      default: ''
+    },
+    resetOtpExpire: {
+      type: Date,
+      default: null
     },
 
     

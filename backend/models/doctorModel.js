@@ -67,6 +67,14 @@ const doctorSchema = new mongoose.Schema(
       type: Object,
       default: {},
     },
+    resetOtp: {
+      type: String,
+      default: ''
+    },
+    resetOtpExpire: {
+      type: Date,
+      default: null
+    },
   },
   { minimize: false }
 );

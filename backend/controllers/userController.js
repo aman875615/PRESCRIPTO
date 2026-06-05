@@ -10,6 +10,7 @@ import razorpay from 'razorpay'
 
 import nodemailer from 'nodemailer'
 
+
 // Register API
 const registerUser = async (req, res) => {
     try {
@@ -399,7 +400,135 @@ const verifyRazorpayPayment = async(req,res)=>{
     }
                 
 
-        
+const sendResetOtp = async (req, res) => {
+    try {
+        const { email } = req.body
 
+        if (!email) {
+            return res.json({ success: false, message: "Email is required" })
+        }
 
-export { registerUser, loginUser, getProfile, updateProfile ,bookAppointment,listAppointment,cancelAppointment,paymentRazorpay,verifyRazorpayPayment,sendMail}    
+        const user = await userModel.findOne({ email })
+        if (!user) {
+            return res.json({ success: false, message: "User not found with this email" })
+        }
+
+        // Generate 6-digit random OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString()
+
+        // Set OTP and expiration (10 minutes)
+        user.resetOtp = otp
+        user.resetOtpExpire = Date.now() + 10 * 60 * 1000
+        await user.save()
+
+        // Configure Nodemailer transporter
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD
+            }
+        })
+
+        const mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: "Password Reset OTP - Prescripto",
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+                    <h2 style="color: #5f6FFF; text-align: center;">Prescripto Password Reset</h2>
+                    <p>Hello ${user.name},</p>
+                    <p>You requested a password reset. Please use the following One-Time Password (OTP) to reset your password:</p>
+                    <div style="background-color: #f4f6f9; padding: 15px; border-radius: 5px; text-align: center; font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #333;">
+                        ${otp}
+                    </div>
+                    <p style="color: #ff3333; font-size: 13px; margin-top: 15px;">Note: This OTP is valid for 10 minutes only. Do not share this OTP with anyone.</p>
+                    <br/>
+                    <p>Regards,<br/>Team Prescripto</p>
+                </div>
+            `
+        }
+
+        await transporter.sendMail(mailOptions)
+
+        res.json({ success: true, message: "OTP sent successfully to your email" })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+const verifyResetOtp = async (req, res) => {
+    try {
+        const { email, otp } = req.body
+
+        if (!email || !otp) {
+            return res.json({ success: false, message: "Email and OTP are required" })
+        }
+
+        const user = await userModel.findOne({ email })
+        if (!user) {
+            return res.json({ success: false, message: "User not found" })
+        }
+
+        if (user.resetOtp === "" || String(user.resetOtp).trim() !== String(otp).trim()) {
+            return res.json({ success: false, message: "Invalid OTP" })
+        }
+
+        if (user.resetOtpExpire < Date.now()) {
+            return res.json({ success: false, message: "OTP expired. Please request a new one." })
+        }
+
+        res.json({ success: true, message: "OTP verified successfully" })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+const resetPassword = async (req, res) => {
+    try {
+        const { email, otp, newPassword } = req.body
+
+        if (!email || !otp || !newPassword) {
+            return res.json({ success: false, message: "Missing required details" })
+        }
+
+        if (newPassword.length < 8) {
+            return res.json({ success: false, message: "Password must be at least 8 characters long" })
+        }
+
+        const user = await userModel.findOne({ email })
+        if (!user) {
+            return res.json({ success: false, message: "User not found" })
+        }
+
+        if (user.resetOtp === "" || String(user.resetOtp).trim() !== String(otp).trim()) {
+            return res.json({ success: false, message: "Invalid OTP verification" })
+        }
+
+        if (user.resetOtpExpire < Date.now()) {
+            return res.json({ success: false, message: "OTP expired" })
+        }
+
+        // Hash new password
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(newPassword, salt)
+
+        // Update password and clear OTP
+        user.password = hashedPassword
+        user.resetOtp = ""
+        user.resetOtpExpire = null
+        await user.save()
+
+        res.json({ success: true, message: "Password reset successfully. You can now login with your new password." })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+export { registerUser, loginUser, getProfile, updateProfile ,bookAppointment,listAppointment,cancelAppointment,paymentRazorpay,verifyRazorpayPayment,sendMail, sendResetOtp, verifyResetOtp, resetPassword}    

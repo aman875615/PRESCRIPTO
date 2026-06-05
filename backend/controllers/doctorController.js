@@ -3,6 +3,7 @@ import doctorModel from "../models/doctorModel.js"
 import appointmentModel from "../models/appointmentModel.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import nodemailer from 'nodemailer'
 
 
 const changeAvailability = async (req,res) =>{
@@ -196,12 +197,148 @@ const updateDoctorProfile = async (req,res) => {
     }
 }
 
+const sendDoctorResetOtp = async (req, res) => {
+    try {
+        const { email } = req.body
 
+        if (!email) {
+            return res.json({ success: false, message: "Email is required" })
+        }
 
-export { changeAvailability ,
-    doctorList,
-     loginDoctor,
-     appointmentsDoctor, appointmentComplete, 
-     appointmentCancel, doctorDashboard,
-     doctorProfile, updateDoctorProfile
+        const doctor = await doctorModel.findOne({ email })
+        if (!doctor) {
+            return res.json({ success: false, message: "Doctor not found with this email" })
+        }
+
+        // Generate 6-digit random OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString()
+
+        // Set OTP and expiration (10 minutes)
+        doctor.resetOtp = otp
+        doctor.resetOtpExpire = Date.now() + 10 * 60 * 1000
+        await doctor.save()
+
+        // Configure Nodemailer transporter
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD
+            }
+        })
+
+        const mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: "Doctor Password Reset OTP - Prescripto",
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+                    <h2 style="color: #5f6FFF; text-align: center;">Prescripto Doctor Password Reset</h2>
+                    <p>Hello Dr. ${doctor.name},</p>
+                    <p>You requested a password reset. Please use the following One-Time Password (OTP) to reset your password:</p>
+                    <div style="background-color: #f4f6f9; padding: 15px; border-radius: 5px; text-align: center; font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #333;">
+                        ${otp}
+                    </div>
+                    <p style="color: #ff3333; font-size: 13px; margin-top: 15px;">Note: This OTP is valid for 10 minutes only. Do not share this OTP with anyone.</p>
+                    <br/>
+                    <p>Regards,<br/>Team Prescripto</p>
+                </div>
+            `
+        }
+
+        await transporter.sendMail(mailOptions)
+
+        res.json({ success: true, message: "OTP sent successfully to your email" })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
     }
+}
+
+const verifyDoctorResetOtp = async (req, res) => {
+    try {
+        const { email, otp } = req.body
+
+        if (!email || !otp) {
+            return res.json({ success: false, message: "Email and OTP are required" })
+        }
+
+        const doctor = await doctorModel.findOne({ email })
+        if (!doctor) {
+            return res.json({ success: false, message: "Doctor not found" })
+        }
+
+        if (doctor.resetOtp === "" || String(doctor.resetOtp).trim() !== String(otp).trim()) {
+            return res.json({ success: false, message: "Invalid OTP" })
+        }
+
+        if (doctor.resetOtpExpire < Date.now()) {
+            return res.json({ success: false, message: "OTP expired. Please request a new one." })
+        }
+
+        res.json({ success: true, message: "OTP verified successfully" })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+const resetDoctorPassword = async (req, res) => {
+    try {
+        const { email, otp, newPassword } = req.body
+
+        if (!email || !otp || !newPassword) {
+            return res.json({ success: false, message: "Missing required details" })
+        }
+
+        if (newPassword.length < 8) {
+            return res.json({ success: false, message: "Password must be at least 8 characters long" })
+        }
+
+        const doctor = await doctorModel.findOne({ email })
+        if (!doctor) {
+            return res.json({ success: false, message: "Doctor not found" })
+        }
+
+        if (doctor.resetOtp === "" || String(doctor.resetOtp).trim() !== String(otp).trim()) {
+            return res.json({ success: false, message: "Invalid OTP verification" })
+        }
+
+        if (doctor.resetOtpExpire < Date.now()) {
+            return res.json({ success: false, message: "OTP expired" })
+        }
+
+        // Hash new password
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(newPassword, salt)
+
+        // Update password and clear OTP
+        doctor.password = hashedPassword
+        doctor.resetOtp = ""
+        doctor.resetOtpExpire = null
+        await doctor.save()
+
+        res.json({ success: true, message: "Password reset successfully. You can now login with your new password." })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+export { 
+    changeAvailability,
+    doctorList,
+    loginDoctor,
+    appointmentsDoctor, 
+    appointmentComplete, 
+    appointmentCancel, 
+    doctorDashboard,
+    doctorProfile, 
+    updateDoctorProfile,
+    sendDoctorResetOtp,
+    verifyDoctorResetOtp,
+    resetDoctorPassword
+}

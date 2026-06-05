@@ -60,8 +60,8 @@ const Login = () => {
   }, [token])
 
   return (
-    <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center px-4 sm:px-0'>
-      <div className='flex flex-col gap-3 m-auto items-start p-6 sm:p-8 w-full sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg'>
+    <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center px-4 sm:px-0 justify-center w-full'>
+      <div className='flex flex-col gap-3 m-auto items-start p-6 sm:p-8 w-full sm:w-96 border rounded-xl text-zinc-600 text-sm shadow-lg'>
 
         <p className='text-2xl font-semibold'>
           {state === 'Sign Up' ? "Create Account" : "Login"}
@@ -105,6 +105,15 @@ const Login = () => {
             required
           />
         </div>
+
+        {state === 'Login' && (
+          <p
+            onClick={() => navigate('/forgot-password')}
+            className='text-xs text-[#5f6FFF] cursor-pointer hover:underline -mt-1 self-end'
+          >
+            Forgot password?
+          </p>
+        )}
 
         <button
           type='submit'
