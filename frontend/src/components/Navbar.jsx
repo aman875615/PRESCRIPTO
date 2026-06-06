@@ -7,6 +7,7 @@ const Navbar = () => {
 
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = React.useState(false);
+    const adminUrl = 'https://prescripto-admin-x8ex.onrender.com'
 
     const { token, setToken, userData } = useContext(AppContext)
 
@@ -67,7 +68,7 @@ const Navbar = () => {
 
                 {/* Admin Panel Button */}
                 <button
-                    onClick={() => window.open('https://prescripto-admin-x8ex.onrender.com', '_blank')}
+                    onClick={() => window.open(adminUrl, '_blank')}
                     className='border border-gray-300 px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-100 transition'
                 >
                     Admin/Doctor Panel
@@ -196,7 +197,7 @@ const Navbar = () => {
                         <button
                             onClick={() => {
                                 setShowMenu(false)
-                                window.open('https://prescripto-admin-x8ex.onrender.com', '_blank')
+                                window.open(adminUrl, '_blank')
                             }}
                             className='px-4 py-2 rounded'
                         >
