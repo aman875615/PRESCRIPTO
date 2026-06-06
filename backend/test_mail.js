@@ -7,7 +7,9 @@ console.log("EMAIL:", process.env.EMAIL);
 console.log("EMAIL_PASSWORD:", process.env.EMAIL_PASSWORD ? "Loaded (length: " + process.env.EMAIL_PASSWORD.length + ")" : "Not Loaded");
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
         user: process.env.EMAIL,
         pass: process.env.EMAIL_PASSWORD

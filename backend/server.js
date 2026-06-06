@@ -1,6 +1,9 @@
 import express from  'express'
 import cors from 'cors'
 import 'dotenv/config'
+import dns from 'dns'
+
+dns.setDefaultResultOrder('ipv4first')
 import connectDB from './config/mongodb.js'
 import connectCloudinary from './config/cloudinary.js'
 import adminRouter from './routes/adminRoute.js'
